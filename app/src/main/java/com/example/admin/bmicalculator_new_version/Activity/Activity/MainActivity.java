@@ -1,9 +1,14 @@
-package com.example.admin.bmicalculator_new_version;
+package com.example.admin.bmicalculator_new_version.Activity.Activity;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import com.example.admin.bmicalculator_new_version.R;
 
 
 public class MainActivity extends Activity {
@@ -34,5 +39,13 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onClickNext(View view) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment next = new SubFragment();
+        ft.replace(R.id.container,next);
+        ft.addToBackStack(null);
+        ft.commit();
     }
 }
