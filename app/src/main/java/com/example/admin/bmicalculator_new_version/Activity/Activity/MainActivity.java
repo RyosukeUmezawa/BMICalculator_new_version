@@ -1,51 +1,67 @@
 package com.example.admin.bmicalculator_new_version.Activity.Activity;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+
 import android.view.View;
 
 import com.example.admin.bmicalculator_new_version.R;
+import com.example.admin.bmicalculator_new_version.Activity.Activity.Fragment.*;
 
 
-public class MainActivity extends Activity {
-
+public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment main = new MainFragment();
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        ft.replace(R.id.activity_container, main);
+        ft.commit();
     }
 
     public void onClickNext(View view) {
+        setContentView(R.layout.fragment_sub);
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment next = new MainFragment();
+
+        ft.addToBackStack(null);
+        ft.replace(R.id.sub_container, next);
+        ft.commit();
+    }
+
+    public void onClickReturn(View v){
+        setContentView(R.layout.fragment_main);
+
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment next = new SubFragment();
-        ft.replace(R.id.container,next);
+
         ft.addToBackStack(null);
+        ft.replace(R.id.main_container, next);
         ft.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        setContentView(R.layout.fragment_main);
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment back = new SubFragment();
+
+        ft.replace(R.id.main_container, back);
+        ft.commit();
+
+        int backStackCnt = getFragmentManager().getBackStackEntryCount();
+
+        if (backStackCnt != 0) {
+            getFragmentManager().popBackStack();
+        }
     }
 }
